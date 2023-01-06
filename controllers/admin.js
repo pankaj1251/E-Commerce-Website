@@ -18,6 +18,7 @@ exports.postAddProduct = (req, res, next) => {
     price: price,
     description: description,
     imageUrl: imageUrl,
+    userId: req.user, //no need to save req.user._id as mongoose will automatically choose the id from the dtored object.
   });
   product
     .save() //this save method is coming from mongoose, we don't need to define it.
@@ -77,6 +78,8 @@ exports.postEditProduct = (req, res, next) => {
 
 exports.getProducts = (req, res, next) => {
   Product.find()
+    // .select("title price -_id")s
+    // .populate("userId", "name")
     .then((products) => {
       res.render("admin/products", {
         prods: products,

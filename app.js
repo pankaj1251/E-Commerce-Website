@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 dotenv.config();
 const mongoose = require("mongoose");
+mongoose.set("strictQuery", false);
 const app = express();
 
 const errorController = require("./controllers/error");

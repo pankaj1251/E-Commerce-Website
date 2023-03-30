@@ -15,7 +15,6 @@ const app = express();
 const store = new MongoDBStore({
   uri: process.env.MONGO_URL,
   collection: "sessions",
-  // dbName: "sessions",
 });
 
 const errorController = require("./controllers/error");
@@ -40,7 +39,10 @@ app.use(
 );
 
 app.use((req, res, next) => {
-  User.findById("63b82849b65083437da8d86c")
+  if (!req.session.user) {
+    return next();
+  }
+  User.findById(req.session.user._id)
     .then((user) => {
       req.user = user;
       next();

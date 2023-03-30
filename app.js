@@ -2,11 +2,21 @@ const path = require("path");
 
 const express = require("express");
 const bodyParser = require("body-parser");
+const session = require("express-session");
+const MongoDBStore = require("connect-mongodb-session")(session);
+
 const dotenv = require("dotenv");
 dotenv.config();
+
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
+
 const app = express();
+const store = new MongoDBStore({
+  uri: process.env.MONGO_URL,
+  collection: "sessions",
+  // dbName: "sessions",
+});
 
 const errorController = require("./controllers/error");
 const User = require("./models/user");
@@ -20,6 +30,14 @@ const authRoutes = require("./routes/auth");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
+app.use(
+  session({
+    secret: "my secret",
+    resave: false,
+    saveUninitialized: false,
+    store: store,
+  })
+);
 
 app.use((req, res, next) => {
   User.findById("63b82849b65083437da8d86c")

@@ -62,18 +62,19 @@ mongoose
     dbName: "shop",
   })
   .then((result) => {
-    User.findOne().then((user) => {
-      if (!user) {
-        const user = new User({
-          name: "Pankaj",
-          email: "pankaj@test.com",
-          cart: {
-            items: [],
-          },
-        });
-        user.save();
-      }
-    });
+    //No need to create new user as we have new user creation flow in auth.js controller in signup route.
+    // User.findOne().then((user) => {
+    //   if (!user) {
+    //     const user = new User({
+    //       name: "Pankaj",
+    //       email: "pankaj@test.com",
+    //       cart: {
+    //         items: [],
+    //       },
+    //     });
+    //     user.save();
+    //   }
+    // });
     app.listen(3000);
   })
   .catch((err) => {
